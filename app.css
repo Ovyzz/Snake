@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    background-color: #007500 !important;
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+    flex-direction: column;
+    color: white;
+}
+
+.title {
+    margin: 20px;
+}
+
+.subtext {
+    color: #CCC;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#mineSweeper {
+
+}
+
+#grid {
+    margin-left: auto;
+    margin-right: auto;
+    border:8px solid;
+}
+
+#grid TR TD{
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: large;
+    border:1px solid beige;
+    background: #00FF00;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+#grid TR TD.snake {
+    background-color: #008a84 !important;
+}
+
+
+
+
