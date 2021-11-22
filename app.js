@@ -1,12 +1,13 @@
-const size = 25;
 let score = 0;
-let position = 1
-let snake = [2, 1, 0];
-let gridCopy  = [];
+const size = 25;
+let speed = 150;
+let tail = [0, 0, 0, 1, 0, 2];
+let indexLine = 0, indexColumn = 2;
+let lineVersor = 0, columnVersor = 1;
 const grid = document.getElementById("grid");
 
 generateBoard();
-setInterval(updateSnake, 150);
+setInterval(updateSnake, speed);
 document.addEventListener("keyup", movement)
 
 function generateBoard() {
@@ -20,22 +21,30 @@ function generateBoard() {
             if (cell % 2 !== 0) {
                 element.style.background = "#8AFF8A";
             }
-            gridCopy[cell++] = element;
+            ++cell;
         }
     }
+    for (let i = 0; i < 3; ++i) {
+        grid.rows[0].cells[i].classList.add("snake");
+    }
+    grid.rows[0].cells[10].innerHTML = "🍎";
     generatesStone();
     generatesApples();
 }
 
 function movement(buttonPressed) {
     if(buttonPressed.keyCode === 37) {
-        position = -1;
+        lineVersor = 0;
+        columnVersor = -1;
     } else if (buttonPressed.keyCode === 38) {
-        position = -size;
+        lineVersor = -1;
+        columnVersor = 0;
     } else if (buttonPressed.keyCode === 39) {
-        position = 1;
+        lineVersor = 0;
+        columnVersor = 1;
     } else if (buttonPressed.keyCode === 40) {
-        position = size;
+        lineVersor = 1;
+        columnVersor = 0;
     }
 }
 
@@ -49,26 +58,43 @@ function generatesStone() {
     for (let i = 0; i < 5; ++i) {
         let randomLine = Math.floor(Math.random() * size);
         let randomColumn = Math.floor(Math.random() * size);
-        grid.rows[randomLine].cells[randomColumn].innerHTML = "🧱";
+        if (grid.rows[randomLine].cells[randomColumn].className !== "snake") {
+            grid.rows[randomLine].cells[randomColumn].innerHTML = "🧱";
+        }
     }
 }
 
 function updateSnake() {
-    if (gridCopy[snake[0] + position].classList.contains("snake") || (gridCopy[snake[0] + position].innerHTML === "🧱") ||
-        (snake[0] >= size * size)) {
+    if (checkGameOver() === 1) {
         return clearInterval(0);
     }
-    const queue = snake.pop();
-    gridCopy[queue].classList.remove("snake");
-    snake.unshift(snake[0] + position);
-    if(gridCopy [snake[0]].innerText === "🍎") {
+    let lastLine = tail[0];
+    let lastColumn = tail[1];
+    grid.rows[lastLine].cells[lastColumn].classList.remove("snake");
+    if(grid.rows[indexLine].cells[indexColumn].innerText === "🍎") {
         ++score;
         document.getElementById("score").innerText = + score + "";
-        gridCopy[snake[0]].innerText = "";
-        gridCopy[queue].classList.add("snake");
-        snake.push(queue);
+        grid.rows[indexLine].cells[indexColumn].innerText = "";
+        tail.push(indexColumn);
+        tail.push(indexLine);
+        grid.rows[indexLine].cells[indexColumn].classList.add("snake");
         clearInterval(0);
         generatesApples();
     }
-    gridCopy[snake[0]].classList.add("snake");
+    tail.shift();
+    tail.shift();
+    indexLine += lineVersor;
+    indexColumn += columnVersor;
+    grid.rows[indexLine].cells[indexColumn].classList.add("snake");
+    tail.push(indexLine);
+    tail.push(indexColumn);
+}
+
+function checkGameOver() {
+    if (grid.rows[indexLine].cells[indexColumn].innerText === "🧱" || indexLine + lineVersor === -1 ||
+        indexColumn + columnVersor === -1 || indexColumn + lineVersor === size || indexLine + columnVersor === size ||
+        grid.rows[indexLine + lineVersor].cells[indexColumn + columnVersor].classList.contains("snake")) {
+        document.getElementById("score").innerText = "GAME OVER!";
+        return 1;
+    }
 }
