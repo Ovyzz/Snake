@@ -27,8 +27,8 @@ function generateBoard() {
     for (let i = 0; i < 3; ++i) {
         grid.rows[0].cells[i].classList.add("snake");
     }
-    grid.rows[0].cells[10].innerHTML = "🍎";
     generatesStone();
+    generatesApples();
     generatesApples();
 }
 
