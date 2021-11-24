@@ -1,7 +1,7 @@
 let score = 0;
 const size = 25;
 let speed = 150;
-let tail = [0, 0, 0, 1, 0, 2];
+let tail = [{i: 0, j: 0}, {i:0, j: 1}, {i: 0, j: 2}];
 let indexLine = 0, indexColumn = 2;
 let lineVersor = 0, columnVersor = 1;
 const grid = document.getElementById("grid");
@@ -68,26 +68,21 @@ function updateSnake() {
     if (checkGameOver() === 1) {
         return clearInterval(0);
     }
-    let lastLine = tail[0];
-    let lastColumn = tail[1];
-    grid.rows[lastLine].cells[lastColumn].classList.remove("snake");
+    grid.rows[tail[0].i].cells[tail[0].j].classList.remove("snake");
     if(grid.rows[indexLine].cells[indexColumn].innerText === "🍎") {
         ++score;
         document.getElementById("score").innerText = + score + "";
         grid.rows[indexLine].cells[indexColumn].innerText = "";
-        tail.push(indexColumn);
-        tail.push(indexLine);
+        tail.push({i: indexLine, j: indexColumn});
         grid.rows[indexLine].cells[indexColumn].classList.add("snake");
         clearInterval(0);
         generatesApples();
     }
     tail.shift();
-    tail.shift();
     indexLine += lineVersor;
     indexColumn += columnVersor;
     grid.rows[indexLine].cells[indexColumn].classList.add("snake");
-    tail.push(indexLine);
-    tail.push(indexColumn);
+    tail.push({i: indexLine, j: indexColumn});
 }
 
 function checkGameOver() {
