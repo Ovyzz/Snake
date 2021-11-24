@@ -87,7 +87,7 @@ function updateSnake() {
 
 function checkGameOver() {
     if (grid.rows[indexLine].cells[indexColumn].innerText === "🧱" || indexLine + lineVersor === -1 ||
-        indexColumn + columnVersor === -1 || indexColumn + lineVersor === size || indexLine + columnVersor === size ||
+        indexColumn + columnVersor === -1 || indexColumn + lineVersor === size - 1 || indexLine + columnVersor === size - 1 ||
         grid.rows[indexLine + lineVersor].cells[indexColumn + columnVersor].classList.contains("snake")) {
         document.getElementById("score").innerText = "GAME OVER!";
         return 1;
