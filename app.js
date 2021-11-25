@@ -1,7 +1,7 @@
 let score = 0;
 const size = 25;
 let speed = 150;
-let tail = [{i: 0, j: 0}, {i:0, j: 1}, {i: 0, j: 2}];
+let tail = [{i: 0, j: 0}, {i: 0, j: 1}, {i: 0, j: 2}];
 let indexLine = 0, indexColumn = 2;
 let lineVersor = 0, columnVersor = 1;
 const grid = document.getElementById("grid");
